@@ -1,3 +1,27 @@
 <script>
-    console.log("Hello World!")
+    function getComputerChoice() {
+        let prob = Math.random()*3;
+        if (prob <= 1) {
+            return "rock";
+        } else if (prob <= 2) {
+            return "paper";
+        } else {
+            return "scissors";
+        }
+    }
+
+    function getHumanChoice() {
+        let humanChoice = prompt("Your choice: ");
+        return humanChoice.toLowerCase();
+    }
+
+    function playRound() {
+        
+    }
+
+    let humanScore = 0;
+    let computerScore = 0;
+
+    console.log(getHumanChoice());
+    console.log(getComputerChoice());
 </script>
