@@ -1,62 +1,112 @@
-<script>
-    function getComputerChoice() {
-        let prob = Math.random()*3;
-        if (prob <= 1) {
-            return "rock";
-        } else if (prob <= 2) {
-            return "paper";
-        } else {
-            return "scissors";
-        }
-    }
-
-    function getHumanChoice() {
-        let humanChoice = prompt("Your choice: ");
-        return humanChoice.toLowerCase();
-    }
-
-    function playGame() {
-        let humanScore = 0;
-        let computerScore = 0;
-
-        function playRound(humanChoice, computerChoice) {
-
-            let winStatus = -1; // 0 is player loss, 1 is tie and 2 is player win
-
-            if (humanChoice === 'rock' && computerChoice === 'paper' ||
-                humanChoice === 'paper' && computerChoice === 'scissors' ||
-                humanChoice === 'scissors' && computerChoice === 'rock'
-            ) {
-                computerScore += 1;
-                winStatus = 0;
-            } else if (humanChoice === computerChoice) {
-                winStatus = 1;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock-Paper-Scissors Game</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <script>
+        function getComputerChoice() {
+            let prob = Math.random()*3;
+            if (prob <= 1) {
+                return "rock";
+            } else if (prob <= 2) {
+                return "paper";
             } else {
-                humanScore += 1;
-                winStatus = 2;
-            }
-
-            humanChoice = humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1);
-            computerChoice = computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1);
-
-            if (winStatus === 0) {
-                console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
-            } else if (winStatus === 1) {
-                console.log(`It's a draw!`);
-            } else {
-                console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+                return "scissors";
             }
         }
 
-        for (let i = 0; i < 5; i++) {
-            let humanChoice = getHumanChoice();
-            let computerChoice = getComputerChoice();
-
-            playRound(humanChoice, computerChoice);
+        function getHumanChoice() {
+            let humanChoice = prompt("Your choice: ");
+            return humanChoice.toLowerCase();
         }
-        console.log(`End of game.\n\nYour Score: ${humanScore}, Computer Score: ${computerScore}`);
-    }
 
-    playGame();
+        function playGame() {
+            let humanScore = 0;
+            let computerScore = 0;
 
-</script>
+            function playRound(humanChoice, computerChoice) {
+
+                let winStatus = -1; // 0 is player loss, 1 is tie and 2 is player win
+
+                if (humanChoice === 'rock' && computerChoice === 'paper' ||
+                    humanChoice === 'paper' && computerChoice === 'scissors' ||
+                    humanChoice === 'scissors' && computerChoice === 'rock'
+                ) {
+                    computerScore += 1;
+                    winStatus = 0;
+                } else if (humanChoice === computerChoice) {
+                    winStatus = 1;
+                } else {
+                    humanScore += 1;
+                    winStatus = 2;
+                }
+
+                humanChoice = humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1);
+                computerChoice = computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1);
+
+                if (winStatus === 0) {
+                    console.log(`You lose! ${computerChoice} beats ${humanChoice}`);
+                } else if (winStatus === 1) {
+                    console.log(`It's a draw!`);
+                } else {
+                    console.log(`You win! ${humanChoice} beats ${computerChoice}`);
+                }
+            }
+
+            let options = document.createElement('div');
+            options.classList.add('container');
+            document.body.appendChild(options);
+
+            let rockBtn = document.createElement('button');
+            rockBtn.textContent = 'Rock';
+            let paperBtn = document.createElement('button');
+            paperBtn.textContent = 'Paper';
+            let scissorsBtn = document.createElement('button');
+            scissorsBtn.textContent = 'Scissors';
+
+            const buttons = [rockBtn, paperBtn, scissorsBtn];
+
+            let results = document.createElement('div');
+            results.textContent = `Your Score: ${humanScore}, Computer Score: ${computerScore}`;
+            results.classList.add('results');
+
+            options.appendChild(rockBtn);
+            options.appendChild(paperBtn);
+            options.appendChild(scissorsBtn);
+
+            document.body.appendChild(results);
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    playRound(button.textContent.toLowerCase(), getComputerChoice());
+                    results.textContent = `Your Score: ${humanScore}, Computer Score: ${computerScore}`;
+
+                    if (humanScore === 5) {
+                        const textNode = document.createTextNode("\nYou won!");
+                        const breakElement = document.createElement("br");
+                        results.appendChild(breakElement);
+                        results.appendChild(textNode);
+                        humanScore = 0;
+                        computerScore = 0;
+                    } else if (computerScore === 5) {
+                        const textNode = document.createTextNode("\nYou lost!");
+                        const breakElement = document.createElement("br");
+                        results.appendChild(breakElement);
+                        results.appendChild(textNode);
+                        humanScore = 0;
+                        computerScore = 0;
+                    }
+                })
+            })
+
+        }
+
+        playGame();
+
+    </script>
+</body>
+</html>
